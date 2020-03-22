@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "productsite-911f7": {
+      "hosting": {
+        "productsite-firebase": [
+          "productsite-911f7"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "productsite-911f7"
+  }
+}
