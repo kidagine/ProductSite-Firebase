@@ -13,7 +13,7 @@ admin.initializeApp({
 exports.addProduct = functions.firestore
 .document('products/{productId}')
 .onCreate((snap, context) => {
-  return dependencyFactory.getProductController().addProduct(snap);
+  return dependencyFactory.getProductController().addProductToStock(snap, context);
 });
 
 // exports.buyProduct = functions.firestore

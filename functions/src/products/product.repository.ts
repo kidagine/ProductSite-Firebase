@@ -1,5 +1,8 @@
+import { Product } from "../models/product";
+import { Stock } from "../models/stock";
+
 export interface ProductRepository {
 
-  addProduct(productId: string): any;
+  addProductToStock(productId: string, product: Product): Stock;
 
 }

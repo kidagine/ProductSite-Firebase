@@ -1,7 +1,9 @@
+import { EventContext } from "firebase-functions";
 import { DocumentSnapshot } from "firebase-functions/lib/providers/firestore";
+import { Stock } from "../models/stock";
 
 export interface ProductController {
 
-  addProduct(snap: DocumentSnapshot): any;
+  addProductToStock(snap: DocumentSnapshot, context: EventContext): Stock;
 
 }
