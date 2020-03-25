@@ -10,4 +10,9 @@ export class ProductService {
     return this.productRepository.addProductToStock(productId, product);
   }
 
+  buyProduct(orderId: string) {
+    return this.productRepository.buyProduct(orderId);
+    return;
+  }
+
 }

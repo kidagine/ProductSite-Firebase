@@ -14,4 +14,8 @@ export class ProductControllerFirebase implements ProductController {
     return this.productService.addProductToStock(context.params.productId, product);
   }
 
+  buyProduct(snap: DocumentSnapshot, context: EventContext) {
+    this.productService.buyProduct(context.params.orderId);
+  }
+
 }

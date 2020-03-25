@@ -16,8 +16,15 @@ exports.addProduct = functions.firestore
   return dependencyFactory.getProductController().addProductToStock(snap, context);
 });
 
-// exports.buyProduct = functions.firestore
-// .document
+exports.buyProduct = functions.firestore
+.document('orders/{orderId}')
+.onCreate((snap, context) => {
+  return dependencyFactory.getProductController().buyProduct(snap, context);
+})
+
+// exports.renameProduct = functions.firestore
+
+
 
 // exports.renameProduct = functions.firestore
 // .document('products/{productId}')

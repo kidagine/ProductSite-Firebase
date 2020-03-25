@@ -16,6 +16,7 @@ describe('ProductService', () => {
     productService = new ProductService(productRepository.object());
   });
 
+  //Add Product
   it('addProductToStock should add a stock with the same productName as the added product', async() => {
     const stockAdded: Stock = productService.addProductToStock("id", product);
     expect(stockAdded.productName).toBe(product.name)
@@ -26,4 +27,17 @@ describe('ProductService', () => {
     expect(stockAdded.stockCount).toBe(5);
   });
 
+  //Buy Product
+  it('buyProduct should decrement the stockCount by one', async() => {
+
+  });
+
+  it('buyProduct should add a product in order collection', async() => {
+
+  }); 
+
+  //Rename Product
+  it('renameProduct should change the product name in order, stock and product collection', async() => {
+
+  });
 });

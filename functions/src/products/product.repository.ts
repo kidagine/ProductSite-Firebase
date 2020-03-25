@@ -4,5 +4,5 @@ import { Stock } from "../models/stock";
 export interface ProductRepository {
 
   addProductToStock(productId: string, product: Product): Stock;
-
+  buyProduct(orderId: string): any;
 }
