@@ -6,13 +6,21 @@ export class ProductService {
 
   constructor(private productRepository: ProductRepository) {}
 
-  addProductToStock(productId: string, product: Product): Stock {
-    return this.productRepository.addProductToStock(productId, product);
+  addProductToStock(productId: string, product: Product): Promise<any> {
+    const stock: Stock = this.createStock(product);
+    return this.productRepository.addProductToStock(productId, stock);
   }
 
-  buyProduct(orderId: string) {
+  buyProduct(orderId: string): Promise<any> {
     return this.productRepository.buyProduct(orderId);
-    return;
+  }
+
+  createStock(product: Product): Stock {
+    const stockDocument: Stock = {
+      productName: product.name,
+      stockCount: 5
+    }
+    return stockDocument;
   }
 
 }
