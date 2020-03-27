@@ -1,6 +1,8 @@
 import * as admin from 'firebase-admin';
 import { ProductRepository } from "./product.repository";
 import { Stock } from '../models/stock';
+import { Product } from '../models/product';
+import { Order } from '../models/order';
 
 const tempProductId = "KJjUBtJvVxqi49ZEvqqO";
 
@@ -13,7 +15,7 @@ export class ProductRepositoryFirebase implements ProductRepository {
 
 
   buyProduct(orderId: string): Promise<any> {
-    //Creates a subcollection orderlines inside the newly created order coument, and sets appropriate data
+    //Creates a subcollection orderlines inside the newly created order document, and sets appropriate data
     admin.firestore().doc(`orders/${orderId}`).collection(`orderlines`).doc(tempProductId).set({
       productId: tempProductId,
       productName: "tempProduct",
@@ -38,4 +40,32 @@ export class ProductRepositoryFirebase implements ProductRepository {
     });  
   }
 
+  renameProduct(productId: string, productBefore: Product, productAfter: Product): Promise<any> {
+    //Gets the stock document that matches the product Id and sets it's productName to the after product name
+    admin.firestore().doc(`stocks/${productId}`).get().then(function(doc) {
+      const stock = doc.data() as Stock;
+      stock.productName = productAfter.name;
+      admin.firestore().doc(`stocks/${productId}`).update(stock)
+      .catch(error => {
+        console.log(error);
+      }); 
+    })
+    .catch(error => {
+      console.log(error);
+    }); 
+  
+    //Gets the orderline subcollections where the productName equals that of the updated product, and sets it's productName to the after product name
+    return admin.firestore().collectionGroup('orderlines').where('productName', '==', productBefore.name).get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {    
+        const order = doc.data() as Order;
+        const orderId: string = doc.ref.parent.parent!.id
+        order.productName = productAfter.name;
+        admin.firestore().collectionGroup('orderlines')
+        admin.firestore().collection('orders').doc(orderId).collection('orderlines').doc(doc.id).update(order).catch();
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    }); 
+  }
 }

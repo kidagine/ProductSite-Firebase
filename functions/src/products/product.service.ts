@@ -15,6 +15,10 @@ export class ProductService {
     return this.productRepository.buyProduct(orderId);
   }
 
+  renameProduct(productId: string, beforeProduct: Product, afterProduct: Product): Promise<any> {
+    return this.productRepository.renameProduct(productId, beforeProduct, afterProduct);
+  }
+
   createStock(product: Product): Stock {
     const stockDocument: Stock = {
       productName: product.name,
