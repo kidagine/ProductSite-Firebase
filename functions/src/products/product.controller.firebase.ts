@@ -1,8 +1,8 @@
 import { EventContext, Change } from "firebase-functions";
 import { DocumentSnapshot } from "firebase-functions/lib/providers/firestore";
-import { ProductController } from "./product.controller";
-import { ProductService } from "./product.service";
 import { Product } from "../models/product";
+import { ProductService } from "./product.service";
+import { ProductController } from "./product.controller";
 
 export class ProductControllerFirebase implements ProductController {
   
