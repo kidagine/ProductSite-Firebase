@@ -10,6 +10,14 @@ export class OrderService {
   }
 
   updateOrderlinesProduct(productBefore: Product, productAfter: Product): Promise<any> {
+    this.emptyProductNameException(productBefore);
+    this.emptyProductNameException(productAfter);
     return this.orderRepository.updateOrderlinesProduct(productBefore, productAfter);
+  }
+
+  emptyProductNameException(product: Product) {
+    if (product.name === "") {
+      throw new SyntaxError('ProductName cannot be empty');
+    }
   }
 }

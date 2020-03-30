@@ -7,23 +7,46 @@ export class StockService {
   constructor(private stockRepository: StockRepository) {}
 
   createStock(productId: string, product: Product): Promise<any> {
-    const stock: Stock = this.createStockDocument(product);
-    return this.stockRepository.createStockWithProductId(productId, stock);
+    const stock = this.createStockDocument(product);
+    return this.createStockWithProductId(productId, stock);
   }
 
   createStockDocument(product: Product): Stock {
-    const stockDocument: Stock = {
+    const stock: Stock = {
       productName: product.name,
       stockCount: 5
     }
-    return stockDocument;
+    return stock
   }
 
-  subtractStockFromOrderlines(): Promise<any> {
-    return this.stockRepository.subtractStockFromOrderlines();
+  createStockWithProductId(productId: string, stock: Stock) {
+    return this.stockRepository.createStockWithProductId(productId, stock);
+  }
+
+  getStockFromOrderlines() {
+    const stock = this.stockRepository.getStockFromOrderlines();
+    this.subtractStockFromOrderlines(stock);
+  }
+
+  subtractStockFromOrderlines(stock: Stock): Promise<any> {
+    this.stockCountZeroException(stock);
+    return this.stockRepository.subtractStockFromOrderlines(stock);
   }
 
   updateOrderProduct(productId: string, productAfter: Product): Promise<any> {
+    this.emptyProductNameException(productAfter);
     return this.stockRepository.updateOrderProduct(productId, productAfter);
+  }
+
+  stockCountZeroException(stock: Stock) {
+    if (stock.stockCount === 0) {
+      throw new RangeError('Stockcount cannot be 0 when subtracting');
+    }
+  }
+
+  emptyProductNameException(product: Product) {
+    if (product.name === "") {
+      throw new SyntaxError('ProductName cannot be empty');
+    }
   }
 }

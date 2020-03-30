@@ -10,11 +10,11 @@ import { StockRepositoryFirebase } from "./stocks/stock.repository.firebase";
 
 export class DependencyFactory {
   getProductController(): ProductController {
-    const stockRepository: StockRepository = new StockRepositoryFirebase();
     const orderRepository: OrderRepository = new OrderRepositoryFirebase();
-    const stockService: StockService = new StockService(stockRepository);
+    const stockRepository: StockRepository = new StockRepositoryFirebase();
     const orderService: OrderService = new OrderService(orderRepository);
-    const productService: ProductService = new ProductService(stockService, orderService);
+    const stockService: StockService = new StockService(stockRepository);
+    const productService: ProductService = new ProductService(orderService, stockService);
     return new ProductControllerFirebase(productService);
   }
 }

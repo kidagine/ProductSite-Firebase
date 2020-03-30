@@ -15,10 +15,17 @@ export class StockRepositoryFirebase implements StockRepository {
     });
   }
 
-  subtractStockFromOrderlines(): Promise<any> {
-    //Gets the stock document that has the same product id with the one in orderlines, and subtracts by one from the stockCont
+  getStockFromOrderlines() {
+    admin.firestore().collection(`stocks`).doc(tempProductId).get().then(function(doc) {
+      const stock = doc.data() as Stock
+      return stock;
+    });
+    return null;
+  }
+
+  subtractStockFromOrderlines(stock: Stock): Promise<any> {
+    //Gets the stock document that has the same product id with the one in orderlines, and subtracts by one from the stockCount
     return admin.firestore().collection(`stocks`).doc(tempProductId).get().then(function(doc) {
-      const stock = doc.data() as Stock;
       stock.stockCount--;
       
       admin.firestore().collection(`stocks`).doc(tempProductId).update(stock)

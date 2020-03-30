@@ -1,11 +1,11 @@
 import * as admin from 'firebase-admin';
 import { Product } from '../models/product';
-import { Orderline } from '../models/order';
+import { Orderline } from '../models/orderline';
 
 const tempProductId = "KJjUBtJvVxqi49ZEvqqO";
 
 export class OrderRepositoryFirebase {
-  
+
   updateOrderlinesWithProductId(orderId: string): Promise<any> {
     //Creates a subcollection orderlines inside the newly created order document, and sets appropriate data
     return admin.firestore().doc(`orders/${orderId}`).collection(`orderlines`).doc(tempProductId).set({

@@ -4,14 +4,14 @@ import { StockService } from "../stocks/stock.service";
 
 export class ProductService {
 
-  constructor(private stockService: StockService, private orderService: OrderService) {}
+  constructor(private orderService: OrderService,private stockService: StockService) {}
 
   addProductToStock(productId: string, product: Product): Promise<any> {
     return this.stockService.createStock(productId, product);
   }
 
   buyProduct(orderId: string): Promise<any> {
-    this.stockService.subtractStockFromOrderlines().catch();
+    this.stockService.getStockFromOrderlines();
     return this.orderService.updateOrderlinesWithProductId(orderId);
   }
 
