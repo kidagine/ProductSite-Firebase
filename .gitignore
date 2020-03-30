@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+functions/service-account.json
 # Only exists if Bazel was run
 /bazel-out
 

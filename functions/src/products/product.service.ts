@@ -1,30 +1,22 @@
-import { ProductRepository } from "./product.repository";
 import { Product } from "../models/product";
-import { Stock } from "../models/stock";
+import { OrderService } from "../orders/order.service";
+import { StockService } from "../stocks/stock.service";
 
 export class ProductService {
 
-  constructor(private productRepository: ProductRepository) {}
+  constructor(private orderService: OrderService,private stockService: StockService) {}
 
   addProductToStock(productId: string, product: Product): Promise<any> {
-    const stock: Stock = this.createStock(product);
-    return this.productRepository.addProductToStock(productId, stock);
+    return this.stockService.createStock(productId, product);
   }
 
   buyProduct(orderId: string): Promise<any> {
-    return this.productRepository.buyProduct(orderId);
+    this.stockService.getStockFromOrderlines();
+    return this.orderService.updateOrderlinesWithProductId(orderId);
   }
 
-  renameProduct(productId: string, beforeProduct: Product, afterProduct: Product): Promise<any> {
-    return this.productRepository.renameProduct(productId, beforeProduct, afterProduct);
+  renameProduct(productId: string, productBefore: Product, productAfter: Product): Promise<any> {
+    this.stockService.updateOrderProduct(productId, productAfter).catch();
+    return this.orderService.updateOrderlinesProduct(productBefore, productAfter);
   }
-
-  createStock(product: Product): Stock {
-    const stockDocument: Stock = {
-      productName: product.name,
-      stockCount: 5
-    }
-    return stockDocument;
-  }
-
 }
